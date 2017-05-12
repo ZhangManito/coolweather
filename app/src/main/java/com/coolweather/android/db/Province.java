@@ -4,10 +4,12 @@ package com.coolweather.android.db;
  * Created by 张国梁 on 2017/5/12.
  */
 
+import org.litepal.crud.DataSupport;
+
 /**
  * 省 类
  */
-public class Province {
+public class Province extends DataSupport{
     //省id
     private int id;
     //省名

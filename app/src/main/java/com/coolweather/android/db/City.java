@@ -4,10 +4,12 @@ package com.coolweather.android.db;
  * Created by 张国梁 on 2017/5/12.
  */
 
+import org.litepal.crud.DataSupport;
+
 /**
  * 市类
  */
-public class City {
+public class City extends DataSupport{
     //市id
     private int id;
     //市名

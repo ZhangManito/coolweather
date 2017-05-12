@@ -4,10 +4,12 @@ package com.coolweather.android.db;
  * Created by 张国梁 on 2017/5/12.
  */
 
+import org.litepal.crud.DataSupport;
+
 /**
  * 县类
  */
-public class County {
+public class County extends DataSupport{
     //县id
     private int id;
     //县名
