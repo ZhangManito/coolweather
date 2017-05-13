@@ -1,5 +1,6 @@
 package com.coolweather.android;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -9,10 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,9 +22,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.coolweather.android.gson.Forecast;
 import com.coolweather.android.gson.Weather;
+import com.coolweather.android.service.AutoUpdateService;
 import com.coolweather.android.util.HttpUtil;
 import com.coolweather.android.util.Utility;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -88,7 +87,7 @@ public class WeatherActivity extends AppCompatActivity {
         String weatherString=prefs.getString("weather",null);
         if (weatherString!=null){
             //有缓存时直接解析天气数据
-            Weather weather= Utility.handleWeatherReqponse(weatherString);
+            Weather weather= Utility.handleWeatherResponse(weatherString);
             mWeatherId=weather.basic.weatherId;
             showWeatherInfo(weather);
         }else {
@@ -170,7 +169,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText=response.body().string();
-                final Weather weather= Utility.handleWeatherReqponse(responseText);
+                final Weather weather= Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -234,6 +233,9 @@ public class WeatherActivity extends AppCompatActivity {
         carWashText.setText(carWash);
         sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        //启动服务
+        Intent intent=new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     /**
